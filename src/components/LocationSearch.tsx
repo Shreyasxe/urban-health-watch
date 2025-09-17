@@ -36,7 +36,7 @@ export const LocationSearch: React.FC<LocationSearchProps> = ({ onLocationSelect
       const response = await fetch(
         `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
           searchQuery
-        )}&limit=5&addressdetails=1&countrycodes=us,ca,gb,au,de,fr,it,es,nl,se,no,dk,fi`
+        )}&limit=5&addressdetails=1&countrycodes=us,ca,gb,au,de,fr,it,es,nl,se,no,dk,fi,in`
       );
       
       if (!response.ok) {
