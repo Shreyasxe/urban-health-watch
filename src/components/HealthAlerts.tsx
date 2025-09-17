@@ -122,13 +122,17 @@ export const HealthAlerts: React.FC<HealthAlertsProps> = ({ location }) => {
 
   if (!location) {
     return (
-      <Card className="p-6 shadow-data-card">
-        <div className="flex items-center space-x-2 mb-4">
-          <AlertTriangle className="h-5 w-5 text-muted-foreground" />
-          <h2 className="text-lg font-semibold">Health Alerts</h2>
+      <Card className="p-8 shadow-card-elegant hover:shadow-card-hover transition-all duration-300 bg-gradient-card border-0 backdrop-blur-sm">
+        <div className="flex items-center space-x-3 mb-6">
+          <div className="p-2 rounded-xl bg-muted/30">
+            <AlertTriangle className="h-6 w-6 text-muted-foreground" />
+          </div>
+          <h2 className="text-xl font-semibold text-foreground">Health Alerts</h2>
         </div>
-        <div className="text-center py-6">
-          <AlertTriangle className="h-8 w-8 text-muted-foreground mx-auto mb-2" />
+        <div className="text-center py-8">
+          <div className="p-3 rounded-xl bg-muted/30 w-fit mx-auto mb-4">
+            <AlertTriangle className="h-8 w-8 text-muted-foreground" />
+          </div>
           <p className="text-sm text-muted-foreground">
             Select a location to view health alerts
           </p>
@@ -138,17 +142,19 @@ export const HealthAlerts: React.FC<HealthAlertsProps> = ({ location }) => {
   }
 
   return (
-    <Card className="p-6 shadow-data-card">
-      <div className="flex items-center justify-between mb-4">
-        <div className="flex items-center space-x-2">
-          <AlertTriangle className="h-5 w-5 text-primary" />
-          <h2 className="text-lg font-semibold">Health Alerts</h2>
+    <Card className="p-8 shadow-card-elegant hover:shadow-card-hover transition-all duration-300 bg-gradient-card border-0 backdrop-blur-sm">
+      <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center space-x-3">
+          <div className="p-2 rounded-xl bg-primary/10">
+            <AlertTriangle className="h-6 w-6 text-primary" />
+          </div>
+          <h2 className="text-xl font-semibold text-foreground">Health Alerts</h2>
         </div>
         <Button
           variant="ghost"
           size="sm"
           onClick={toggleNotifications}
-          className="flex items-center space-x-1"
+          className="flex items-center space-x-2 bg-white/50 hover:bg-white/70 border border-white/30"
         >
           {notificationsEnabled ? (
             <Bell className="h-4 w-4 text-primary" />
@@ -162,19 +168,38 @@ export const HealthAlerts: React.FC<HealthAlertsProps> = ({ location }) => {
         {alerts.map((alert) => (
           <div
             key={alert.id}
-            className="flex items-start space-x-3 p-4 rounded-lg border bg-card hover:shadow-sm transition-shadow"
+            className={`flex items-start space-x-4 p-6 rounded-2xl border-2 transition-all duration-200 hover:shadow-card-hover ${alert.type === 'danger' || alert.severity === 'extreme'
+              ? 'bg-gradient-to-r from-destructive/10 to-destructive/20 border-destructive/30 hover:border-destructive/40'
+              : alert.type === 'warning' || alert.severity === 'high' || alert.severity === 'moderate'
+              ? 'bg-gradient-to-r from-health-moderate/10 to-health-moderate/20 border-health-moderate/30 hover:border-health-moderate/40'
+              : 'bg-gradient-to-r from-health-good/10 to-health-good/20 border-health-good/30 hover:border-health-good/40'
+            }`}
           >
-            {getAlertIcon(alert.type, alert.severity)}
+            <div className={`p-2 rounded-xl ${alert.type === 'danger' || alert.severity === 'extreme'
+              ? 'bg-destructive/20'
+              : alert.type === 'warning' || alert.severity === 'high' || alert.severity === 'moderate'
+              ? 'bg-health-moderate/20'
+              : 'bg-health-good/20'
+            }`}>
+              {getAlertIcon(alert.type, alert.severity)}
+            </div>
             <div className="flex-1 min-w-0">
-              <div className="flex items-center space-x-2 mb-1">
-                <h3 className="font-medium text-sm">{alert.title}</h3>
+              <div className="flex items-center space-x-3 mb-2">
+                <h3 className={`font-semibold text-lg ${alert.type === 'danger' || alert.severity === 'extreme'
+                  ? 'text-destructive'
+                  : alert.type === 'warning' || alert.severity === 'high' || alert.severity === 'moderate'
+                  ? 'text-health-moderate-foreground'
+                  : 'text-health-good-foreground'
+                }`}>
+                  {alert.title}
+                </h3>
                 <Badge 
-                  className={`${getSeverityColor(alert.severity)} text-xs`}
+                  className={`${getSeverityColor(alert.severity)} text-xs px-3 py-1`}
                 >
                   {alert.severity}
                 </Badge>
               </div>
-              <p className="text-sm text-muted-foreground mb-2">
+              <p className="text-sm text-foreground/80 mb-3 leading-relaxed">
                 {alert.message}
               </p>
               <div className="text-xs text-muted-foreground">
@@ -185,15 +210,16 @@ export const HealthAlerts: React.FC<HealthAlertsProps> = ({ location }) => {
         ))}
       </div>
 
-      <div className="mt-4 pt-4 border-t">
+      <div className="mt-6 pt-6 border-t border-white/30">
         <div className="flex items-center justify-between">
-          <span className="text-xs text-muted-foreground">
-            Notifications: {notificationsEnabled ? 'Enabled' : 'Disabled'}
+          <span className="text-sm text-muted-foreground">
+            Notifications: <span className="font-medium">{notificationsEnabled ? 'Enabled' : 'Disabled'}</span>
           </span>
           <Button
             variant="outline"
             size="sm"
             onClick={toggleNotifications}
+            className="bg-white/80 backdrop-blur-sm border-primary/20 hover:bg-primary/10"
           >
             {notificationsEnabled ? 'Disable' : 'Enable'} Alerts
           </Button>

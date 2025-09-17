@@ -101,17 +101,20 @@ export const WeatherData: React.FC<WeatherDataProps> = ({ location }) => {
   };
 
   return (
-    <Card className="p-6 shadow-data-card">
+    <Card className="p-8 shadow-card-elegant hover:shadow-card-hover transition-all duration-300 bg-gradient-card border-0 backdrop-blur-sm">
       <div className="flex items-center justify-between mb-6">
-        <div className="flex items-center space-x-2">
-          <Thermometer className="h-5 w-5 text-primary" />
-          <h2 className="text-lg font-semibold">Weather Conditions</h2>
+        <div className="flex items-center space-x-3">
+          <div className="p-2 rounded-xl bg-primary/10">
+            <Thermometer className="h-6 w-6 text-primary" />
+          </div>
+          <h2 className="text-xl font-semibold text-foreground">Weather Conditions</h2>
         </div>
         <Button
           variant="outline"
           size="sm"
           onClick={fetchWeatherData}
           disabled={isLoading}
+          className="bg-white/80 backdrop-blur-sm border-primary/20 hover:bg-primary/10 transition-all duration-200"
         >
           {isLoading ? (
             <Loader2 className="h-4 w-4 animate-spin" />
@@ -122,85 +125,97 @@ export const WeatherData: React.FC<WeatherDataProps> = ({ location }) => {
       </div>
 
       {isLoading && !weatherData && (
-        <div className="flex items-center justify-center py-12">
-          <div className="text-center space-y-3">
-            <Loader2 className="h-8 w-8 animate-spin text-primary mx-auto" />
+        <div className="flex items-center justify-center py-16">
+          <div className="text-center space-y-4">
+            <div className="p-3 rounded-xl bg-primary/10 w-fit mx-auto">
+              <Loader2 className="h-8 w-8 animate-spin text-primary" />
+            </div>
             <p className="text-sm text-muted-foreground">Fetching weather data...</p>
           </div>
         </div>
       )}
 
       {error && (
-        <div className="text-center py-12">
-          <Thermometer className="h-8 w-8 text-muted-foreground mx-auto mb-3" />
-          <p className="text-sm text-destructive mb-2">{error}</p>
-          <Button variant="outline" size="sm" onClick={fetchWeatherData}>
+        <div className="text-center py-16">
+          <div className="p-3 rounded-xl bg-destructive/10 w-fit mx-auto mb-4">
+            <Thermometer className="h-8 w-8 text-destructive" />
+          </div>
+          <p className="text-sm text-destructive mb-4 font-medium">{error}</p>
+          <Button variant="outline" size="sm" onClick={fetchWeatherData} className="bg-white/80 backdrop-blur-sm border-primary/20 hover:bg-primary/10">
             Try Again
           </Button>
         </div>
       )}
 
       {weatherData && (
-        <div className="space-y-6">
+        <div className="space-y-8">
           {/* Main Temperature Display */}
-          <div className="text-center pb-6 border-b">
-            <div className={`text-4xl font-bold mb-2 ${getTemperatureColor(weatherData.temperature)}`}>
+          <div className="text-center pb-8 border-b border-white/20">
+            <div className={`text-5xl font-bold mb-3 ${getTemperatureColor(weatherData.temperature)}`}>
               {weatherData.temperature}°C
             </div>
-            <div className="text-lg text-muted-foregroup capitalize mb-2">
+            <div className="text-lg text-muted-foreground capitalize mb-4">
               {weatherData.description}
             </div>
-            <Badge variant={getTemperatureStatus(weatherData.temperature).variant}>
+            <Badge variant={getTemperatureStatus(weatherData.temperature).variant} className="px-4 py-2 text-sm">
               {getTemperatureStatus(weatherData.temperature).label}
             </Badge>
           </div>
 
           {/* Weather Details Grid */}
           <div className="grid grid-cols-2 gap-4">
-            <div className="flex items-center space-x-3 p-3 rounded-lg bg-accent/50">
-              <Thermometer className="h-5 w-5 text-primary" />
+            <div className="flex items-center space-x-4 p-5 rounded-2xl bg-gradient-to-r from-primary/5 to-primary/10 border border-primary/20">
+              <div className="p-2 rounded-xl bg-primary/20">
+                <Thermometer className="h-6 w-6 text-primary" />
+              </div>
               <div>
-                <div className="text-sm font-medium">Feels Like</div>
-                <div className="text-lg font-semibold">{weatherData.feelsLike}°C</div>
+                <div className="text-sm font-medium text-muted-foreground">Feels Like</div>
+                <div className="text-2xl font-semibold text-foreground">{weatherData.feelsLike}°C</div>
               </div>
             </div>
 
-            <div className="flex items-center space-x-3 p-3 rounded-lg bg-accent/50">
-              <Droplets className="h-5 w-5 text-blue-500" />
+            <div className="flex items-center space-x-4 p-5 rounded-2xl bg-gradient-to-r from-blue-500/5 to-blue-500/10 border border-blue-500/20">
+              <div className="p-2 rounded-xl bg-blue-500/20">
+                <Droplets className="h-6 w-6 text-blue-500" />
+              </div>
               <div>
-                <div className="text-sm font-medium">Humidity</div>
-                <div className="text-lg font-semibold">{weatherData.humidity}%</div>
+                <div className="text-sm font-medium text-muted-foreground">Humidity</div>
+                <div className="text-2xl font-semibold text-foreground">{weatherData.humidity}%</div>
               </div>
             </div>
 
-            <div className="flex items-center space-x-3 p-3 rounded-lg bg-accent/50">
-              <Wind className="h-5 w-5 text-green-500" />
+            <div className="flex items-center space-x-4 p-5 rounded-2xl bg-gradient-to-r from-green-500/5 to-green-500/10 border border-green-500/20">
+              <div className="p-2 rounded-xl bg-green-500/20">
+                <Wind className="h-6 w-6 text-green-500" />
+              </div>
               <div>
-                <div className="text-sm font-medium">Wind Speed</div>
-                <div className="text-lg font-semibold">{weatherData.windSpeed} m/s</div>
+                <div className="text-sm font-medium text-muted-foreground">Wind Speed</div>
+                <div className="text-2xl font-semibold text-foreground">{weatherData.windSpeed} m/s</div>
               </div>
             </div>
 
-            <div className="flex items-center space-x-3 p-3 rounded-lg bg-accent/50">
-              <Eye className="h-5 w-5 text-purple-500" />
+            <div className="flex items-center space-x-4 p-5 rounded-2xl bg-gradient-to-r from-purple-500/5 to-purple-500/10 border border-purple-500/20">
+              <div className="p-2 rounded-xl bg-purple-500/20">
+                <Eye className="h-6 w-6 text-purple-500" />
+              </div>
               <div>
-                <div className="text-sm font-medium">Visibility</div>
-                <div className="text-lg font-semibold">{weatherData.visibility} km</div>
+                <div className="text-sm font-medium text-muted-foreground">Visibility</div>
+                <div className="text-2xl font-semibold text-foreground">{weatherData.visibility} km</div>
               </div>
             </div>
           </div>
 
           {/* Pressure */}
-          <div className="flex items-center justify-between p-3 rounded-lg bg-accent/30">
-            <div className="flex items-center space-x-2">
-              <div className="w-2 h-2 rounded-full bg-primary"></div>
-              <span className="text-sm font-medium">Atmospheric Pressure</span>
+          <div className="flex items-center justify-between p-5 rounded-2xl bg-gradient-sky border border-secondary/30">
+            <div className="flex items-center space-x-3">
+              <div className="w-3 h-3 rounded-full bg-secondary-foreground/70"></div>
+              <span className="text-lg font-medium text-secondary-foreground">Atmospheric Pressure</span>
             </div>
-            <span className="text-lg font-semibold">{weatherData.pressure} hPa</span>
+            <span className="text-2xl font-semibold text-secondary-foreground">{weatherData.pressure} hPa</span>
           </div>
 
           {lastUpdated && (
-            <div className="text-xs text-muted-foreground text-center pt-4 border-t">
+            <div className="text-xs text-muted-foreground text-center pt-6 border-t border-white/20">
               Last updated: {lastUpdated.toLocaleTimeString()}
             </div>
           )}

@@ -74,21 +74,22 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-gradient-to-br from-background via-background to-secondary/20">
       {/* Header */}
-      <header className="border-b bg-gradient-earth shadow-environmental">
-        <div className="container mx-auto px-4 py-6">
+      <header className="relative border-b bg-gradient-hero shadow-environmental backdrop-blur-sm">
+        <div className="absolute inset-0 bg-white/5 backdrop-blur-sm"></div>
+        <div className="relative container mx-auto px-6 py-8">
           <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-3">
-              <div className="p-2 rounded-lg bg-white/10 backdrop-blur-sm">
-                <Leaf className="h-8 w-8 text-white" />
+            <div className="flex items-center space-x-4">
+              <div className="p-3 rounded-2xl bg-white/15 backdrop-blur-md border border-white/20 shadow-lg">
+                <Leaf className="h-10 w-10 text-white drop-shadow-sm" />
               </div>
               <div>
-                <h1 className="text-3xl font-bold text-white">SmartWellbeing</h1>
-                <p className="text-white/80">City Health Tracker</p>
+                <h1 className="text-4xl font-bold text-white drop-shadow-sm tracking-tight">SmartWellbeing</h1>
+                <p className="text-white/90 text-lg font-medium">City Health Tracker</p>
               </div>
             </div>
-            <Badge variant="secondary" className="bg-white/20 text-white hover:bg-white/30">
+            <Badge variant="secondary" className="bg-white/20 text-white hover:bg-white/30 backdrop-blur-sm border border-white/30 px-4 py-2 text-sm font-medium">
               NASA Earth Data Powered
             </Badge>
           </div>
@@ -96,15 +97,17 @@ const Index = () => {
       </header>
 
       {/* Main Content */}
-      <div className="container mx-auto px-4 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+      <div className="container mx-auto px-6 py-12">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           
           {/* Location Search & Saved Locations */}
-          <div className="lg:col-span-1 space-y-6">
-            <Card className="p-6 shadow-data-card">
-              <div className="flex items-center space-x-2 mb-4">
-                <MapPin className="h-5 w-5 text-primary" />
-                <h2 className="text-lg font-semibold">Search Location</h2>
+          <div className="lg:col-span-1 space-y-8">
+            <Card className="p-8 shadow-card-elegant hover:shadow-card-hover transition-all duration-300 bg-gradient-card border-0 backdrop-blur-sm">
+              <div className="flex items-center space-x-3 mb-6">
+                <div className="p-2 rounded-xl bg-primary/10">
+                  <MapPin className="h-6 w-6 text-primary" />
+                </div>
+                <h2 className="text-xl font-semibold text-foreground">Search Location</h2>
               </div>
               <LocationSearch onLocationSelect={handleLocationSelect} />
             </Card>
@@ -120,45 +123,48 @@ const Index = () => {
 
           {/* Main Content Area */}
           <div className="lg:col-span-3">
-            <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-              <TabsList className="grid w-full grid-cols-4">
-                <TabsTrigger value="map" className="flex items-center space-x-2">
+            <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-8">
+              <TabsList className="grid w-full grid-cols-4 bg-white/70 backdrop-blur-sm border border-white/50 p-2 rounded-2xl shadow-card-elegant">
+                <TabsTrigger value="map" className="flex items-center space-x-2 rounded-xl transition-all duration-200 data-[state=active]:bg-white data-[state=active]:shadow-md">
                   <MapPin className="h-4 w-4" />
-                  <span>Map</span>
+                  <span className="hidden sm:inline">Map</span>
                 </TabsTrigger>
-                <TabsTrigger value="data" className="flex items-center space-x-2">
+                <TabsTrigger value="data" className="flex items-center space-x-2 rounded-xl transition-all duration-200 data-[state=active]:bg-white data-[state=active]:shadow-md">
                   <Thermometer className="h-4 w-4" />
-                  <span>Environmental Data</span>
+                  <span className="hidden sm:inline">Data</span>
                 </TabsTrigger>
-                <TabsTrigger value="tips" className="flex items-center space-x-2">
+                <TabsTrigger value="tips" className="flex items-center space-x-2 rounded-xl transition-all duration-200 data-[state=active]:bg-white data-[state=active]:shadow-md">
                   <BookOpen className="h-4 w-4" />
-                  <span>Health Tips</span>
+                  <span className="hidden sm:inline">Tips</span>
                 </TabsTrigger>
-                <TabsTrigger value="feedback" className="flex items-center space-x-2">
+                <TabsTrigger value="feedback" className="flex items-center space-x-2 rounded-xl transition-all duration-200 data-[state=active]:bg-white data-[state=active]:shadow-md">
                   <MessageCircle className="h-4 w-4" />
-                  <span>Feedback</span>
+                  <span className="hidden sm:inline">Feedback</span>
                 </TabsTrigger>
               </TabsList>
 
-              <TabsContent value="map" className="space-y-6">
-                <Card className="shadow-data-card">
-                  <div className="p-6">
-                    <div className="flex items-center justify-between mb-4">
-                      <div className="flex items-center space-x-2">
-                        <MapPin className="h-5 w-5 text-primary" />
-                        <h2 className="text-lg font-semibold">Interactive Environmental Map</h2>
+              <TabsContent value="map" className="space-y-8">
+                <Card className="shadow-card-elegant hover:shadow-card-hover transition-all duration-300 bg-gradient-card border-0 backdrop-blur-sm overflow-hidden">
+                  <div className="p-8">
+                    <div className="flex items-center justify-between mb-6">
+                      <div className="flex items-center space-x-3">
+                        <div className="p-2 rounded-xl bg-primary/10">
+                          <MapPin className="h-6 w-6 text-primary" />
+                        </div>
+                        <h2 className="text-2xl font-semibold text-foreground">Interactive Environmental Map</h2>
                       </div>
                       {selectedLocation && (
                         <Button 
                           onClick={() => handleSaveLocation(selectedLocation)}
                           variant="outline"
                           size="sm"
+                          className="bg-white/80 backdrop-blur-sm border-primary/20 hover:bg-primary/10 transition-all duration-200"
                         >
                           Save Location
                         </Button>
                       )}
                     </div>
-                    <div className="h-[600px] rounded-lg overflow-hidden">
+                    <div className="h-[600px] rounded-2xl overflow-hidden shadow-card-elegant">
                       <InteractiveMap 
                         selectedLocation={selectedLocation}
                         onLocationSelect={handleLocationSelect}
@@ -168,18 +174,20 @@ const Index = () => {
                 </Card>
               </TabsContent>
 
-              <TabsContent value="data" className="space-y-6">
+              <TabsContent value="data" className="space-y-8">
                 {selectedLocation ? (
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <WeatherData location={selectedLocation} />
                     <AirQualityData location={selectedLocation} />
                   </div>
                 ) : (
-                  <Card className="p-12 text-center shadow-data-card">
-                    <Wind className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                    <h3 className="text-xl font-semibold mb-2">Select a Location</h3>
-                    <p className="text-muted-foreground">
-                      Choose a location from the map or search to view environmental data.
+                  <Card className="p-16 text-center shadow-card-elegant bg-gradient-card border-0 backdrop-blur-sm">
+                    <div className="p-4 rounded-2xl bg-primary/10 w-fit mx-auto mb-6">
+                      <Wind className="h-16 w-16 text-primary" />
+                    </div>
+                    <h3 className="text-2xl font-semibold mb-4 text-foreground">Select a Location</h3>
+                    <p className="text-muted-foreground text-lg leading-relaxed max-w-md mx-auto">
+                      Choose a location from the map or search to view comprehensive environmental data and health insights.
                     </p>
                   </Card>
                 )}

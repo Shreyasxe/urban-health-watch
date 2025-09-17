@@ -168,17 +168,20 @@ export const AirQualityData: React.FC<AirQualityDataProps> = ({ location }) => {
   }, [location]);
 
   return (
-    <Card className="p-6 shadow-data-card">
+    <Card className="p-8 shadow-card-elegant hover:shadow-card-hover transition-all duration-300 bg-gradient-card border-0 backdrop-blur-sm">
       <div className="flex items-center justify-between mb-6">
-        <div className="flex items-center space-x-2">
-          <Wind className="h-5 w-5 text-primary" />
-          <h2 className="text-lg font-semibold">Air Quality Index</h2>
+        <div className="flex items-center space-x-3">
+          <div className="p-2 rounded-xl bg-primary/10">
+            <Wind className="h-6 w-6 text-primary" />
+          </div>
+          <h2 className="text-xl font-semibold text-foreground">Air Quality Index</h2>
         </div>
         <Button
           variant="outline"
           size="sm"
           onClick={fetchAirQualityData}
           disabled={isLoading}
+          className="bg-white/80 backdrop-blur-sm border-primary/20 hover:bg-primary/10 transition-all duration-200"
         >
           {isLoading ? (
             <Loader2 className="h-4 w-4 animate-spin" />
@@ -189,100 +192,104 @@ export const AirQualityData: React.FC<AirQualityDataProps> = ({ location }) => {
       </div>
 
       {isLoading && !airQualityData && (
-        <div className="flex items-center justify-center py-12">
-          <div className="text-center space-y-3">
-            <Loader2 className="h-8 w-8 animate-spin text-primary mx-auto" />
+        <div className="flex items-center justify-center py-16">
+          <div className="text-center space-y-4">
+            <div className="p-3 rounded-xl bg-primary/10 w-fit mx-auto">
+              <Loader2 className="h-8 w-8 animate-spin text-primary" />
+            </div>
             <p className="text-sm text-muted-foreground">Fetching air quality data...</p>
           </div>
         </div>
       )}
 
       {error && (
-        <div className="text-center py-12">
-          <Wind className="h-8 w-8 text-muted-foreground mx-auto mb-3" />
-          <p className="text-sm text-destructive mb-2">{error}</p>
-          <Button variant="outline" size="sm" onClick={fetchAirQualityData}>
+        <div className="text-center py-16">
+          <div className="p-3 rounded-xl bg-destructive/10 w-fit mx-auto mb-4">
+            <Wind className="h-8 w-8 text-destructive" />
+          </div>
+          <p className="text-sm text-destructive mb-4 font-medium">{error}</p>
+          <Button variant="outline" size="sm" onClick={fetchAirQualityData} className="bg-white/80 backdrop-blur-sm border-primary/20 hover:bg-primary/10">
             Try Again
           </Button>
         </div>
       )}
 
       {airQualityData && (
-        <div className="space-y-6">
+        <div className="space-y-8">
           {/* AQI Display */}
-          <div className="text-center pb-6 border-b">
-            <div className="text-4xl font-bold mb-2">
+          <div className="text-center pb-8 border-b border-white/20">
+            <div className="text-5xl font-bold mb-4 text-foreground">
               {airQualityData.aqi}
             </div>
             <Badge 
-              className={`${getAQIInfo(airQualityData.aqi).bgColor} ${getAQIInfo(airQualityData.aqi).textColor} mb-3`}
+              className={`${getAQIInfo(airQualityData.aqi).bgColor} ${getAQIInfo(airQualityData.aqi).textColor} mb-6 px-4 py-2 text-sm`}
             >
               {airQualityData.category}
             </Badge>
             <div className="mb-4">
-              <Progress value={(airQualityData.aqi / 200) * 100} className="h-2" />
+              <Progress value={(airQualityData.aqi / 200) * 100} className="h-3 rounded-full" />
             </div>
           </div>
 
           {/* Health Message */}
-          <div className="flex items-start space-x-3 p-4 rounded-lg bg-accent/50">
+          <div className="flex items-start space-x-4 p-6 rounded-2xl bg-gradient-to-r from-accent/20 to-accent/30 border border-accent/40">
             {React.createElement(getAQIInfo(airQualityData.aqi).icon, {
-              className: `h-5 w-5 text-${getAQIInfo(airQualityData.aqi).color} mt-0.5 flex-shrink-0`
+              className: `h-6 w-6 text-${getAQIInfo(airQualityData.aqi).color} mt-1 flex-shrink-0`
             })}
             <div>
-              <div className="font-medium mb-1">Health Impact</div>
-              <div className="text-sm text-muted-foregroup">
+              <div className="font-semibold mb-2 text-lg text-foreground">Health Impact</div>
+              <div className="text-sm text-muted-foreground leading-relaxed">
                 {airQualityData.healthMessage}
               </div>
             </div>
           </div>
 
           {/* Pollutants */}
-          <div className="space-y-3">
-            <h3 className="font-medium text-sm">Key Pollutants (μg/m³)</h3>
-            <div className="grid grid-cols-2 gap-3">
-              <div className="flex justify-between items-center p-2 rounded bg-accent/30">
-                <span className="text-sm">PM2.5</span>
-                <span className="font-semibold">{airQualityData.pollutants.pm25}</span>
+          <div className="space-y-4">
+            <h3 className="font-semibold text-lg text-foreground">Key Pollutants (μg/m³)</h3>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="flex justify-between items-center p-4 rounded-xl bg-gradient-to-r from-secondary/20 to-secondary/30 border border-secondary/40">
+                <span className="text-sm font-medium text-secondary-foreground">PM2.5</span>
+                <span className="font-bold text-xl text-secondary-foreground">{airQualityData.pollutants.pm25}</span>
               </div>
-              <div className="flex justify-between items-center p-2 rounded bg-accent/30">
-                <span className="text-sm">PM10</span>
-                <span className="font-semibold">{airQualityData.pollutants.pm10}</span>
+              <div className="flex justify-between items-center p-4 rounded-xl bg-gradient-to-r from-secondary/20 to-secondary/30 border border-secondary/40">
+                <span className="text-sm font-medium text-secondary-foreground">PM10</span>
+                <span className="font-bold text-xl text-secondary-foreground">{airQualityData.pollutants.pm10}</span>
               </div>
-              <div className="flex justify-between items-center p-2 rounded bg-accent/30">
-                <span className="text-sm">NO₂</span>
-                <span className="font-semibold">{airQualityData.pollutants.no2}</span>
+              <div className="flex justify-between items-center p-4 rounded-xl bg-gradient-to-r from-accent/20 to-accent/30 border border-accent/40">
+                <span className="text-sm font-medium text-accent-foreground">NO₂</span>
+                <span className="font-bold text-xl text-accent-foreground">{airQualityData.pollutants.no2}</span>
               </div>
-              <div className="flex justify-between items-center p-2 rounded bg-accent/30">
-                <span className="text-sm">O₃</span>
-                <span className="font-semibold">{airQualityData.pollutants.o3}</span>
+              <div className="flex justify-between items-center p-4 rounded-xl bg-gradient-to-r from-accent/20 to-accent/30 border border-accent/40">
+                <span className="text-sm font-medium text-accent-foreground">O₃</span>
+                <span className="font-bold text-xl text-accent-foreground">{airQualityData.pollutants.o3}</span>
               </div>
-              <div className="flex justify-between items-center p-2 rounded bg-accent/30">
-                <span className="text-sm">SO₂</span>
-                <span className="font-semibold">{airQualityData.pollutants.so2}</span>
+              <div className="flex justify-between items-center p-4 rounded-xl bg-gradient-to-r from-muted/40 to-muted/60 border border-muted/60">
+                <span className="text-sm font-medium text-muted-foreground">SO₂</span>
+                <span className="font-bold text-xl text-muted-foreground">{airQualityData.pollutants.so2}</span>
               </div>
-              <div className="flex justify-between items-center p-2 rounded bg-accent/30">
-                <span className="text-sm">CO</span>
-                <span className="font-semibold">{airQualityData.pollutants.co}</span>
+              <div className="flex justify-between items-center p-4 rounded-xl bg-gradient-to-r from-muted/40 to-muted/60 border border-muted/60">
+                <span className="text-sm font-medium text-muted-foreground">CO</span>
+                <span className="font-bold text-xl text-muted-foreground">{airQualityData.pollutants.co}</span>
               </div>
             </div>
           </div>
 
           {/* Recommendations */}
-          <div className="space-y-3">
-            <h3 className="font-medium text-sm">Health Recommendations</h3>
-            <div className="space-y-2">
+          <div className="space-y-4">
+            <h3 className="font-semibold text-lg text-foreground">Health Recommendations</h3>
+            <div className="space-y-3">
               {airQualityData.recommendations.map((rec, index) => (
-                <div key={index} className="flex items-start space-x-2 text-sm">
-                  <div className="w-1.5 h-1.5 rounded-full bg-primary mt-1.5 flex-shrink-0"></div>
-                  <span>{rec}</span>
+                <div key={index} className="flex items-start space-x-3 p-4 rounded-xl bg-white/50 border border-white/30">
+                  <div className="w-2 h-2 rounded-full bg-primary mt-2 flex-shrink-0"></div>
+                  <span className="text-sm leading-relaxed text-foreground">{rec}</span>
                 </div>
               ))}
             </div>
           </div>
 
           {lastUpdated && (
-            <div className="text-xs text-muted-foreground text-center pt-4 border-t">
+            <div className="text-xs text-muted-foreground text-center pt-6 border-t border-white/20">
               Last updated: {lastUpdated.toLocaleTimeString()}
             </div>
           )}

@@ -78,6 +78,8 @@ export default {
       },
       backgroundImage: {
         "gradient-earth": "var(--gradient-earth)",
+        "gradient-hero": "var(--gradient-hero)",
+        "gradient-card": "var(--gradient-card)",
         "gradient-health-good": "var(--gradient-health-good)",
         "gradient-health-moderate": "var(--gradient-health-moderate)",
         "gradient-health-poor": "var(--gradient-health-poor)",
@@ -86,6 +88,8 @@ export default {
       boxShadow: {
         environmental: "var(--shadow-environmental)",
         "data-card": "var(--shadow-data)",
+        "card-elegant": "0 8px 32px hsl(142 71% 45% / 0.08), 0 2px 8px hsl(0 0% 0% / 0.04)",
+        "card-hover": "0 12px 40px hsl(142 71% 45% / 0.12), 0 4px 16px hsl(0 0% 0% / 0.08)",
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
