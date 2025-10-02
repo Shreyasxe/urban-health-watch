@@ -11,8 +11,6 @@ import { toast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 
 interface FeedbackFormData {
-  name: string;
-  email: string;
   location: string;
   category: string;
   description: string;
@@ -21,8 +19,6 @@ interface FeedbackFormData {
 
 export const FeedbackForm: React.FC = () => {
   const [formData, setFormData] = useState<FeedbackFormData>({
-    name: '',
-    email: '',
     location: '',
     category: '',
     description: '',
@@ -92,10 +88,10 @@ export const FeedbackForm: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!formData.name || !formData.email || !formData.description) {
+    if (!formData.description) {
       toast({
         title: "Missing required fields",
-        description: "Please fill in all required fields",
+        description: "Please provide a description",
         variant: "destructive",
       });
       return;
@@ -104,6 +100,26 @@ export const FeedbackForm: React.FC = () => {
     setIsSubmitting(true);
     
     try {
+      // Get authenticated user
+      const { data: { user } } = await supabase.auth.getUser();
+      
+      if (!user) {
+        toast({
+          title: "Authentication required",
+          description: "Please log in to submit feedback",
+          variant: "destructive",
+        });
+        setIsSubmitting(false);
+        return;
+      }
+
+      // Get user profile for name and email
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('email')
+        .eq('id', user.id)
+        .single();
+      
       let fileUrls: string[] = [];
       
       // Upload files if any
@@ -111,12 +127,13 @@ export const FeedbackForm: React.FC = () => {
         fileUrls = await uploadFiles(formData.files);
       }
       
-      // Save feedback to database
+      // Save feedback to database with user_id
       const { error } = await supabase
         .from('feedback')
         .insert({
-          name: formData.name,
-          email: formData.email,
+          user_id: user.id,
+          name: profile?.email?.split('@')[0] || 'User',
+          email: profile?.email || user.email || '',
           location: formData.location,
           category: formData.category,
           description: formData.description,
@@ -133,8 +150,6 @@ export const FeedbackForm: React.FC = () => {
       
       // Reset form
       setFormData({
-        name: '',
-        email: '',
         location: '',
         category: '',
         description: '',
@@ -192,32 +207,6 @@ export const FeedbackForm: React.FC = () => {
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-6">
-        {/* Personal Info */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="space-y-2">
-            <Label htmlFor="name">Name *</Label>
-            <Input
-              id="name"
-              type="text"
-              placeholder="Your full name"
-              value={formData.name}
-              onChange={(e) => handleInputChange('name', e.target.value)}
-              required
-            />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="email">Email *</Label>
-            <Input
-              id="email"
-              type="email"
-              placeholder="your.email@example.com"
-              value={formData.email}
-              onChange={(e) => handleInputChange('email', e.target.value)}
-              required
-            />
-          </div>
-        </div>
-
         {/* Location */}
         <div className="space-y-2">
           <Label htmlFor="location">Location</Label>
@@ -332,7 +321,7 @@ export const FeedbackForm: React.FC = () => {
           </div>
           <Button
             type="submit"
-            disabled={isSubmitting || !formData.name || !formData.email || !formData.description}
+            disabled={isSubmitting || !formData.description}
             className="min-w-[120px]"
           >
             {isSubmitting ? (
