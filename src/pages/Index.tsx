@@ -13,7 +13,7 @@ import { FeedbackForm } from '@/components/FeedbackForm';
 import { SavedLocations } from '@/components/SavedLocations';
 import { WeatherData } from '@/components/WeatherData';
 import { AirQualityData } from '@/components/AirQualityData';
-import { MapPin, Leaf, Thermometer, Wind, AlertTriangle, BookOpen, MessageCircle, LogOut, Bell, MapPinned } from 'lucide-react';
+import { MapPin, Leaf, Thermometer, Wind, AlertTriangle, BookOpen, MessageCircle, LogOut, Bell, MapPinned, Shield } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 import { usePermissions } from '@/hooks/usePermissions';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
@@ -144,10 +144,10 @@ const Index = () => {
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
               <div className="p-3 rounded-2xl bg-white/15 backdrop-blur-md border border-white/20 shadow-lg">
-                <Leaf className="h-10 w-10 text-white drop-shadow-sm" />
+                <Shield className="h-10 w-10 text-white drop-shadow-sm" />
               </div>
               <div>
-                <h1 className="text-4xl font-bold text-white drop-shadow-sm tracking-tight">SmartWellbeing</h1>
+                <h1 className="text-4xl font-bold text-white drop-shadow-sm tracking-tight">Air Quality Guardian</h1>
                 <p className="text-white/90 text-lg font-medium">City Health Tracker</p>
               </div>
             </div>

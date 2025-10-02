@@ -123,7 +123,7 @@ const Auth = () => {
       <Card className="w-full max-w-md shadow-elegant">
         <CardHeader className="space-y-1">
           <CardTitle className="text-2xl font-bold text-center bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-            SmartWellbeing
+            Air Quality Guardian
           </CardTitle>
           <CardDescription className="text-center">
             City Health Tracker - Monitor urban health
