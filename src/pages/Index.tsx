@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { supabase } from '@/integrations/supabase/client';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -11,8 +13,11 @@ import { FeedbackForm } from '@/components/FeedbackForm';
 import { SavedLocations } from '@/components/SavedLocations';
 import { WeatherData } from '@/components/WeatherData';
 import { AirQualityData } from '@/components/AirQualityData';
-import { MapPin, Leaf, Thermometer, Wind, AlertTriangle, BookOpen, MessageCircle } from 'lucide-react';
+import { MapPin, Leaf, Thermometer, Wind, AlertTriangle, BookOpen, MessageCircle, LogOut, Bell, MapPinned } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
+import { usePermissions } from '@/hooks/usePermissions';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import type { User, Session } from '@supabase/supabase-js';
 
 export interface LocationData {
   id: string;
@@ -23,9 +28,45 @@ export interface LocationData {
 }
 
 const Index = () => {
+  const navigate = useNavigate();
+  const [user, setUser] = useState<User | null>(null);
+  const [session, setSession] = useState<Session | null>(null);
   const [selectedLocation, setSelectedLocation] = useState<LocationData | null>(null);
   const [savedLocations, setSavedLocations] = useState<LocationData[]>([]);
   const [activeTab, setActiveTab] = useState('map');
+  const [showPermissionsDialog, setShowPermissionsDialog] = useState(false);
+  const { 
+    locationPermission, 
+    notificationPermission, 
+    requestLocationPermission, 
+    requestNotificationPermission 
+  } = usePermissions();
+
+  // Auth check
+  useEffect(() => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      setSession(session);
+      setUser(session?.user ?? null);
+    });
+
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+      setUser(session?.user ?? null);
+      
+      if (!session) {
+        navigate('/auth');
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, [navigate]);
+
+  // Request permissions after auth
+  useEffect(() => {
+    if (user && (locationPermission === 'prompt' || notificationPermission === 'default')) {
+      setShowPermissionsDialog(true);
+    }
+  }, [user, locationPermission, notificationPermission]);
 
   // Load saved locations from localStorage
   useEffect(() => {
@@ -73,6 +114,27 @@ const Index = () => {
     });
   };
 
+  // Handle logout
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    navigate('/auth');
+  };
+
+  // Handle permissions request
+  const handleRequestPermissions = async () => {
+    if (locationPermission !== 'granted') {
+      await requestLocationPermission();
+    }
+    if (notificationPermission !== 'granted') {
+      await requestNotificationPermission();
+    }
+    setShowPermissionsDialog(false);
+  };
+
+  if (!user) {
+    return null;
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-secondary/20">
       {/* Header */}
@@ -89,9 +151,20 @@ const Index = () => {
                 <p className="text-white/90 text-lg font-medium">City Health Tracker</p>
               </div>
             </div>
-            <Badge variant="secondary" className="bg-white/20 text-white hover:bg-white/30 backdrop-blur-sm border border-white/30 px-4 py-2 text-sm font-medium">
-              NASA Earth Data Powered
-            </Badge>
+            <div className="flex items-center gap-3">
+              <Badge variant="secondary" className="bg-white/20 text-white hover:bg-white/30 backdrop-blur-sm border border-white/30 px-4 py-2 text-sm font-medium">
+                NASA Earth Data Powered
+              </Badge>
+              <Button 
+                onClick={handleLogout} 
+                variant="ghost" 
+                size="sm"
+                className="bg-white/10 text-white hover:bg-white/20 backdrop-blur-sm border border-white/20"
+              >
+                <LogOut className="h-4 w-4 mr-2" />
+                Logout
+              </Button>
+            </div>
           </div>
         </div>
       </header>
@@ -204,6 +277,46 @@ const Index = () => {
           </div>
         </div>
       </div>
+
+      {/* Permissions Dialog */}
+      <Dialog open={showPermissionsDialog} onOpenChange={setShowPermissionsDialog}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Enable Features</DialogTitle>
+            <DialogDescription>
+              To provide the best experience, we need your permission for:
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4 py-4">
+            <div className="flex items-start space-x-3 p-4 rounded-lg bg-secondary/20">
+              <MapPinned className="h-5 w-5 text-primary mt-0.5" />
+              <div className="flex-1">
+                <h4 className="font-medium">Location Access</h4>
+                <p className="text-sm text-muted-foreground">
+                  Get accurate environmental data for your current location
+                </p>
+              </div>
+            </div>
+            <div className="flex items-start space-x-3 p-4 rounded-lg bg-secondary/20">
+              <Bell className="h-5 w-5 text-primary mt-0.5" />
+              <div className="flex-1">
+                <h4 className="font-medium">Notifications</h4>
+                <p className="text-sm text-muted-foreground">
+                  Receive health alerts when air quality or weather conditions change
+                </p>
+              </div>
+            </div>
+          </div>
+          <div className="flex gap-3">
+            <Button onClick={() => setShowPermissionsDialog(false)} variant="outline" className="flex-1">
+              Skip for now
+            </Button>
+            <Button onClick={handleRequestPermissions} className="flex-1">
+              Enable
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
