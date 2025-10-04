@@ -1,0 +1,102 @@
+{
+  "app": {
+    "title": "Air Quality Guardian",
+    "subtitle": "Monitor Environmental Health"
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "routePlanner": "Route Planner",
+    "logout": "Logout",
+    "login": "Login"
+  },
+  "tabs": {
+    "map": "Interactive Map",
+    "data": "Environmental Data",
+    "tips": "Health Tips",
+    "feedback": "Feedback"
+  },
+  "location": {
+    "search": "Search Location",
+    "searchPlaceholder": "Search for a city or location...",
+    "saved": "Saved Locations",
+    "noSaved": "No saved locations yet",
+    "save": "Save Location",
+    "remove": "Remove",
+    "requesting": "Requesting location access..."
+  },
+  "weather": {
+    "title": "Weather Information",
+    "temperature": "Temperature",
+    "humidity": "Humidity",
+    "windSpeed": "Wind Speed",
+    "pressure": "Pressure",
+    "visibility": "Visibility"
+  },
+  "airQuality": {
+    "title": "Air Quality Index",
+    "good": "Good",
+    "moderate": "Moderate",
+    "unhealthy": "Unhealthy",
+    "veryUnhealthy": "Very Unhealthy",
+    "hazardous": "Hazardous",
+    "pm25": "PM2.5",
+    "pm10": "PM10",
+    "o3": "Ozone",
+    "no2": "NO₂",
+    "so2": "SO₂",
+    "co": "CO"
+  },
+  "health": {
+    "alerts": "Health Alerts",
+    "noAlerts": "No health alerts at this time",
+    "tips": "Health & Safety Tips"
+  },
+  "feedback": {
+    "title": "Submit Feedback",
+    "description": "Description",
+    "descriptionPlaceholder": "Share your feedback, report issues, or suggest improvements...",
+    "attachFiles": "Attach Files",
+    "submit": "Submit Feedback",
+    "submitting": "Submitting...",
+    "success": "Feedback submitted successfully!",
+    "error": "Failed to submit feedback"
+  },
+  "routing": {
+    "title": "Low-Pollution Route Planner",
+    "subtitle": "Find cleaner routes based on real-time air quality",
+    "from": "Starting Location",
+    "to": "Destination",
+    "findRoutes": "Find Routes",
+    "calculating": "Calculating routes...",
+    "noRoutes": "No routes found",
+    "route": "Route",
+    "avgAqi": "Avg AQI",
+    "cleanerBy": "Cleaner by",
+    "recommended": "Recommended",
+    "distance": "Distance",
+    "duration": "Duration",
+    "selectRoute": "Select Route",
+    "alert": "Cleaner route available!"
+  },
+  "permissions": {
+    "title": "Enable Location & Notifications",
+    "description": "To provide real-time environmental data and health alerts, we need access to:",
+    "location": "Location Services",
+    "locationDesc": "Get air quality data for your current location",
+    "notifications": "Notifications",
+    "notificationsDesc": "Receive alerts about air quality changes",
+    "enable": "Enable Permissions",
+    "skipForNow": "Skip for Now"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "retry": "Retry",
+    "close": "Close",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "back": "Back"
+  }
+}

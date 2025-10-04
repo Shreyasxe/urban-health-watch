@@ -63,6 +63,11 @@ All colors MUST be HSL for environmental health monitoring theme.
     --gradient-health-moderate: linear-gradient(135deg, hsl(45 93% 58%), hsl(45 93% 78%));
     --gradient-health-poor: linear-gradient(135deg, hsl(0 84% 60%), hsl(350 89% 35%));
     --gradient-sky: linear-gradient(180deg, hsl(199 89% 94%), hsl(199 89% 88%));
+    
+    /* Shadows for cards and interactive elements */
+    --shadow-card-elegant: 0 10px 40px hsl(142 71% 45% / 0.08);
+    --shadow-card-hover: 0 20px 60px hsl(142 71% 45% / 0.15);
+    --shadow-data-card: 0 4px 20px hsl(0 0% 0% / 0.06);
 
     /* Map and data visualization */
     --map-overlay: 0 0% 0% / 0.05;

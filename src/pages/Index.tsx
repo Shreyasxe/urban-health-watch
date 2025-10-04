@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { supabase } from '@/integrations/supabase/client';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -13,7 +14,8 @@ import { FeedbackForm } from '@/components/FeedbackForm';
 import { SavedLocations } from '@/components/SavedLocations';
 import { WeatherData } from '@/components/WeatherData';
 import { AirQualityData } from '@/components/AirQualityData';
-import { MapPin, Leaf, Thermometer, Wind, AlertTriangle, BookOpen, MessageCircle, LogOut, Bell, MapPinned, Shield } from 'lucide-react';
+import { LanguageSwitcher } from '@/components/LanguageSwitcher';
+import { MapPin, Leaf, Thermometer, Wind, AlertTriangle, BookOpen, MessageCircle, LogOut, Bell, MapPinned, Shield, Navigation } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 import { usePermissions } from '@/hooks/usePermissions';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
@@ -29,6 +31,7 @@ export interface LocationData {
 
 const Index = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [selectedLocation, setSelectedLocation] = useState<LocationData | null>(null);
@@ -88,7 +91,7 @@ const Index = () => {
       setSavedLocations(updated);
       localStorage.setItem('smartwellbeing-locations', JSON.stringify(updated));
       toast({
-        title: "Location Saved",
+        title: t('location.save'),
         description: `${location.name} has been added to your saved locations.`,
       });
     }
@@ -100,7 +103,7 @@ const Index = () => {
     setSavedLocations(updated);
     localStorage.setItem('smartwellbeing-locations', JSON.stringify(updated));
     toast({
-      title: "Location Removed",
+      title: t('location.remove'),
       description: "Location has been removed from your saved locations.",
     });
   };
@@ -147,11 +150,18 @@ const Index = () => {
                 <Shield className="h-10 w-10 text-white drop-shadow-sm" />
               </div>
               <div>
-                <h1 className="text-4xl font-bold text-white drop-shadow-sm tracking-tight">Air Quality Guardian</h1>
-                <p className="text-white/90 text-lg font-medium">City Health Tracker</p>
+                <h1 className="text-4xl font-bold text-white drop-shadow-sm tracking-tight">{t('app.title')}</h1>
+                <p className="text-white/90 text-lg font-medium">{t('app.subtitle')}</p>
               </div>
             </div>
             <div className="flex items-center gap-3">
+              <LanguageSwitcher />
+              <Link to="/route-planner">
+                <Button variant="secondary" className="bg-white/20 text-white hover:bg-white/30 backdrop-blur-sm border border-white/30">
+                  <Navigation className="h-4 w-4 mr-2" />
+                  {t('nav.routePlanner')}
+                </Button>
+              </Link>
               <Badge variant="secondary" className="bg-white/20 text-white hover:bg-white/30 backdrop-blur-sm border border-white/30 px-4 py-2 text-sm font-medium">
                 NASA Earth Data Powered
               </Badge>
@@ -162,7 +172,7 @@ const Index = () => {
                 className="bg-white/10 text-white hover:bg-white/20 backdrop-blur-sm border border-white/20"
               >
                 <LogOut className="h-4 w-4 mr-2" />
-                Logout
+                {t('nav.logout')}
               </Button>
             </div>
           </div>
@@ -180,7 +190,7 @@ const Index = () => {
                 <div className="p-2 rounded-xl bg-primary/10">
                   <MapPin className="h-6 w-6 text-primary" />
                 </div>
-                <h2 className="text-xl font-semibold text-foreground">Search Location</h2>
+                <h2 className="text-xl font-semibold text-foreground">{t('location.search')}</h2>
               </div>
               <LocationSearch onLocationSelect={handleLocationSelect} />
             </Card>
@@ -200,19 +210,19 @@ const Index = () => {
               <TabsList className="grid w-full grid-cols-4 bg-white/70 backdrop-blur-sm border border-white/50 p-2 rounded-2xl shadow-card-elegant">
                 <TabsTrigger value="map" className="flex items-center space-x-2 rounded-xl transition-all duration-200 data-[state=active]:bg-white data-[state=active]:shadow-md">
                   <MapPin className="h-4 w-4" />
-                  <span className="hidden sm:inline">Map</span>
+                  <span className="hidden sm:inline">{t('tabs.map')}</span>
                 </TabsTrigger>
                 <TabsTrigger value="data" className="flex items-center space-x-2 rounded-xl transition-all duration-200 data-[state=active]:bg-white data-[state=active]:shadow-md">
                   <Thermometer className="h-4 w-4" />
-                  <span className="hidden sm:inline">Data</span>
+                  <span className="hidden sm:inline">{t('tabs.data')}</span>
                 </TabsTrigger>
                 <TabsTrigger value="tips" className="flex items-center space-x-2 rounded-xl transition-all duration-200 data-[state=active]:bg-white data-[state=active]:shadow-md">
                   <BookOpen className="h-4 w-4" />
-                  <span className="hidden sm:inline">Tips</span>
+                  <span className="hidden sm:inline">{t('tabs.tips')}</span>
                 </TabsTrigger>
                 <TabsTrigger value="feedback" className="flex items-center space-x-2 rounded-xl transition-all duration-200 data-[state=active]:bg-white data-[state=active]:shadow-md">
                   <MessageCircle className="h-4 w-4" />
-                  <span className="hidden sm:inline">Feedback</span>
+                  <span className="hidden sm:inline">{t('tabs.feedback')}</span>
                 </TabsTrigger>
               </TabsList>
 
@@ -233,7 +243,7 @@ const Index = () => {
                           size="sm"
                           className="bg-white/80 backdrop-blur-sm border-primary/20 hover:bg-primary/10 transition-all duration-200"
                         >
-                          Save Location
+                          {t('location.save')}
                         </Button>
                       )}
                     </div>
@@ -282,37 +292,37 @@ const Index = () => {
       <Dialog open={showPermissionsDialog} onOpenChange={setShowPermissionsDialog}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
-            <DialogTitle>Enable Features</DialogTitle>
+            <DialogTitle>{t('permissions.title')}</DialogTitle>
             <DialogDescription>
-              To provide the best experience, we need your permission for:
+              {t('permissions.description')}
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-4 py-4">
             <div className="flex items-start space-x-3 p-4 rounded-lg bg-secondary/20">
               <MapPinned className="h-5 w-5 text-primary mt-0.5" />
               <div className="flex-1">
-                <h4 className="font-medium">Location Access</h4>
+                <h4 className="font-medium">{t('permissions.location')}</h4>
                 <p className="text-sm text-muted-foreground">
-                  Get accurate environmental data for your current location
+                  {t('permissions.locationDesc')}
                 </p>
               </div>
             </div>
             <div className="flex items-start space-x-3 p-4 rounded-lg bg-secondary/20">
               <Bell className="h-5 w-5 text-primary mt-0.5" />
               <div className="flex-1">
-                <h4 className="font-medium">Notifications</h4>
+                <h4 className="font-medium">{t('permissions.notifications')}</h4>
                 <p className="text-sm text-muted-foreground">
-                  Receive health alerts when air quality or weather conditions change
+                  {t('permissions.notificationsDesc')}
                 </p>
               </div>
             </div>
           </div>
           <div className="flex gap-3">
             <Button onClick={() => setShowPermissionsDialog(false)} variant="outline" className="flex-1">
-              Skip for now
+              {t('permissions.skipForNow')}
             </Button>
             <Button onClick={handleRequestPermissions} className="flex-1">
-              Enable
+              {t('permissions.enable')}
             </Button>
           </div>
         </DialogContent>
